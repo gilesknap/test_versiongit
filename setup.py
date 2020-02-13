@@ -27,7 +27,8 @@ develop_reqs = [
 with open("README.rst", "rb") as f:
     long_description = f.read().decode("utf-8")
 
-packages = [x for x in find_packages() if x.startswith("t")]
+# packages = [x for x in find_packages() if not x.startswith("test")]
+packages = find_packages()
 
 setup(
     name=module_name,
