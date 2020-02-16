@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 versiongit = {path = "./../versiongit"}
+flake8 = "*"
 
 [packages]
 

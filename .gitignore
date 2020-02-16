@@ -1,1 +1,6 @@
 .cache
+.history
+dist
+build
+*.pyc
+*.egg-info

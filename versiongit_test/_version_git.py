@@ -51,7 +51,12 @@ def get_version_from_git(path=None):
     return tag, error, sha1
 
 
-__version__, git_error, git_sha1 = get_version_from_git()
+try:
+    # In a release there will be a static version file written by setup.py
+    from ._version_static import __version__  # type: ignore
+except ImportError:
+    # Otherwise get the release number from git describe
+    __version__, git_error, git_sha1 = get_version_from_git()
 
 
 def get_cmdclass(build_py=None, sdist=None):
@@ -65,8 +70,10 @@ def get_cmdclass(build_py=None, sdist=None):
     def make_version_static(base_dir, pkg):
         # Only place _version_static in the root directory of a module
         pkg = pkg.split(".")[0]
-        with open(os.path.join(base_dir, pkg, "_version_static.py"), "w") as f:
-            f.write("__version__ = %r\n" % __version__)
+        static_version = os.path.join(base_dir, pkg, "_version_static.py")
+        if not os.path.exists(static_version):
+            with open(static_version, "w") as f:
+                f.write("__version__ = %r\n" % __version__)
 
     class BuildPy(build_py):
         def run(self):
